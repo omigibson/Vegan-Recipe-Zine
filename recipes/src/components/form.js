@@ -7,23 +7,18 @@ class Form extends React.Component {
     super(props)
     this.state = {
       recipeTitle: '',
-      image: '',
+      servings: '',
       ingredientsList: [{amount: 0, unit: '', ingredient: ''},],
       instructions: ''
     }
-      this.fileInput = React.createRef();
   }
 
-  handleTitleOrInstructionsInput = (event) => {
+  handleInput = (event) => {
     this.setState({
       [event.target.id]: event.target.value
     })
   }
-  handleImageInput = (event) => {
-    this.setState({
-      [event.target.id]: `${this.fileInput.current.files[0].name}`
-    })
-  }
+
   handleAddIngredient = () => {
     this.setState({
       ingredientsList: [...this.state.ingredientsList, {amount: 0, unit: '', ingredient: ''}]
@@ -65,7 +60,7 @@ class Form extends React.Component {
     const recipesRef = firebase.database().ref('recipes')
     const recipe = {
     title: this.state.recipeTitle,
-    image: this.state.image,
+    servings: this.state.servings,
     ingredients: this.state.ingredientsList,
     instructions: this.state.instructions
   }
@@ -73,7 +68,7 @@ class Form extends React.Component {
   recipesRef.push(recipe)
   this.setState({
     recipeTitle: '',
-    image: '',
+    servings: '',
     ingredientsList: [{amount: 0, unit: '', ingredient: ''},],
     instructions: ''
   })
@@ -91,10 +86,10 @@ class Form extends React.Component {
         <form id="addRecipeForm" onSubmit={this.handleSubmit}>
 
           <label htmlFor="recipeTitle">Title</label>
-          <input id="recipeTitle" name="recipeTitle" type="text" value={this.state.recipeTitle} onChange={(e) => this.handleTitleOrInstructionsInput(e)} />
+          <input id="recipeTitle" type="text" value={this.state.recipeTitle} onChange={(e) => this.handleInput(e)} />
 
-          <label htmlFor="image">Image</label>
-          <input id="image" type="file" onChange={(e) => this.handleImageInput(e)} ref={this.fileInput} />
+          <label htmlFor="image">Servings</label>
+          <input id="servings" type="number" value={this.state.servings} onChange={(e) => this.handleInput(e)} />
 
           <h2>Ingredients:</h2>
           <button type="button" onClick={this.handleAddIngredient}>Add ingredient</button>
@@ -102,7 +97,7 @@ class Form extends React.Component {
 
           <h2>Instructions:</h2>
           <label htmlFor="instructions">Instructions</label>
-          <textarea id="instructions" name='instructions' value={this.state.instructions} onChange={(e) => this.handleTitleOrInstructionsInput(e)} placeholder="Write instructions on how to prepare the meal here"/>
+          <textarea id="instructions" value={this.state.instructions} onChange={(e) => this.handleInput(e)} placeholder="Write instructions on how to prepare the meal here"/>
 
           <button type="submit" form="addRecipeForm">Save recipe</button>
 
