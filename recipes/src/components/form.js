@@ -1,6 +1,6 @@
 import React from 'react';
 import firebase from '../firebase.js';
-import Ingredient from './ingredient.js';
+import Ingredient from './formingredient.js';
 
 class Form extends React.Component {
   constructor(props) {
