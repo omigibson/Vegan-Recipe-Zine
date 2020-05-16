@@ -18,3 +18,12 @@ h1, h2, h3, h4 {
 h1 {
   font-size: 3.75rem; /* 60px */
 }
+
+a {
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}

@@ -7,9 +7,6 @@ import RecipeList from './components/recipelist.js';
 function App() {
   return (
       <div className="App">
-        <Header />
-        <RecipeList />
-        <Form />
       </div>
   );
 }

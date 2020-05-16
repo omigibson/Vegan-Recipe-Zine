@@ -1,13 +1,26 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './css/index.css';
-import App from './App';
+import Header from './components/header.js';
+import RecipeList from './components/recipelist.js';
+import Form from './components/form.js';
+import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(
+const routing = (
   <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+    <Router>
+      <Header />
+      <Switch>
+        <Route exact path="/" component={RecipeList}></Route>
+        <Route path="/add-recipe" component={Form}></Route>
+      </Switch>
+    </Router>
+  </React.StrictMode>
+)
+
+ReactDOM.render(
+    routing,
   document.getElementById('root')
 );
 
