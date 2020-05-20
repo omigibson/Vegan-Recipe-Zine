@@ -1,15 +1,22 @@
 import React from 'react';
 import '../css/header.css';
 import headerImage from '../images/nadine-primeau-unsplash.jpg';
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 function Header(props) {
   return (
 
       <header className="header">
         <img className="header-image" alt="" src={headerImage} />
-        <h1 className="header-heading"><NavLink className="home-link" to="/">Vegan Recipe Zine</NavLink></h1>
-        <NavLink className="add-link" to="/add-recipe">Add Recipe</NavLink>
+        <h1 className="header-heading">
+          <Link className="home-link" to="/">Vegan Recipe Zine</Link>
+        </h1>
+        <nav className="nav">
+          <ul className="nav-list">
+            <li><NavLink className="nav-link" to="/">Home</NavLink></li>
+            <li><NavLink className="nav-link" to="/add-recipe">Add Recipe</NavLink></li>
+          </ul>
+        </nav>
       </header>
 
   )
