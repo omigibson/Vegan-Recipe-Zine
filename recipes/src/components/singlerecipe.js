@@ -1,4 +1,5 @@
 import React from 'react';
+import firebase from '../firebase.js';
 
 class Recipe extends React.Component {
   constructor(props) {
@@ -11,17 +12,27 @@ class Recipe extends React.Component {
 componentDidMount(){
   let params = new URLSearchParams(document.location.search.substring(1))
   let id = params.get("recipeId")
-  let recipeData = this.props.getRecipeData(id)
-  this.setState({
-    recipe: recipeData
+  const recipeRef = firebase.database().ref('recipes/' + id)
+  recipeRef.once('value', (snapshot) => {
+    let recipe = snapshot.val()
+    let newState = []
+    newState.push({
+      id: id,
+      title: recipe.title,
+      servings: recipe.servings,
+      ingredientsList: recipe.ingredients,
+      instructions: recipe.instructions
+    });
+    this.setState({
+      recipe: newState
+    });
   })
-  console.log(id)
 }
   render(){
     return (
         <article className="">
           <header>
-            <h2>Single Recipe!</h2>
+            <h2>{this.state.recipe[0] ? this.state.recipe[0].title : '' }</h2>
           </header>
   {/*
           <ul>
