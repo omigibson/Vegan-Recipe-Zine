@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from "react-router-dom";
 import firebase from '../firebase.js';
+import '../css/recipelist.css';
 
 class RecipeList extends React.Component {
   constructor(props) {
@@ -31,14 +32,14 @@ class RecipeList extends React.Component {
   }
   render(){
     return (
-      <section>
-        <ul>
+      <section class="recipe-list-container">
+        <ul class="recipe-list">
         {this.state.recipes.map((recipe) => {
           return (
-            <li key={recipe.id}>
+            <li key={recipe.id} className="recipe-list-item">
               <article>
                 <header>
-                  <h2><Link to={`/recipe/${recipe.recipeTitle}?recipeId=${recipe.id}`} >{recipe.recipeTitle}</Link></h2>
+                  <h2><Link className="recipe-list-link" to={`/recipe/${recipe.recipeTitle}?recipeId=${recipe.id}`} >{recipe.recipeTitle}</Link></h2>
                 </header>
                 <p>Servings: {recipe.servings}</p>
               </article>

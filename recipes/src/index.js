@@ -5,10 +5,10 @@ import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import * as serviceWorker from './serviceWorker';
 
 // COMPONENTS
-import Header from './components/header.js';
-import RecipeList from './components/recipelist.js';
-import Recipe from './components/singlerecipe.js';
-import Form from './components/form.js';
+import Header from './components/header';
+import RecipeList from './components/recipelist';
+import Recipe from './components/singlerecipe';
+import Form from './components/form';
 
 function App (props) {
   return (

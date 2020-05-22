@@ -1,6 +1,6 @@
 import React from 'react';
 import firebase from '../firebase.js';
-import Ingredient from './formingredient.js';
+import Ingredient from './formingredient';
 
 class Form extends React.Component {
   constructor(props) {
@@ -82,7 +82,7 @@ class Form extends React.Component {
     )
     return (
       <div>
-        <h1>Add a new recipe</h1>
+        <h2>Add a new recipe</h2>
         <form id="addRecipeForm" onSubmit={this.handleSubmit}>
 
           <label htmlFor="recipeTitle">Title</label>
@@ -91,11 +91,11 @@ class Form extends React.Component {
           <label htmlFor="image">Servings</label>
           <input id="servings" type="number" value={this.state.servings} onChange={(e) => this.handleInput(e)} />
 
-          <h2>Ingredients:</h2>
+          <h3>Ingredients:</h3>
           <button type="button" onClick={this.handleAddIngredient}>Add ingredient</button>
           <ul>{ingredients}</ul>
 
-          <h2>Instructions:</h2>
+          <h3>Instructions:</h3>
           <label htmlFor="instructions">Instructions</label>
           <textarea id="instructions" value={this.state.instructions} onChange={(e) => this.handleInput(e)} placeholder="Write instructions on how to prepare the meal here"/>
 
