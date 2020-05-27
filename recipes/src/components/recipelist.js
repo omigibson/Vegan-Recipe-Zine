@@ -32,8 +32,8 @@ class RecipeList extends React.Component {
   }
   render(){
     return (
-      <section class="recipe-list-container">
-        <ul class="recipe-list">
+      <section className="recipe-list-container">
+        <ul className="recipe-list">
         {this.state.recipes.map((recipe) => {
           return (
             <li key={recipe.id} className="recipe-list-item">

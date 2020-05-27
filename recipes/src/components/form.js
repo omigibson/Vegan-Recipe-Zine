@@ -1,12 +1,14 @@
 import React from 'react';
 import firebase from '../firebase.js';
 import * as firebaseui from 'firebaseui'
+import '../css/form.css';
 import Ingredient from './formingredient';
 
 class Form extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      signedInUser: '',
       recipeTitle: '',
       servings: '',
       image: '',
@@ -122,12 +124,11 @@ uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
   });
 });
 
-
-
   //CLEAR STATE
   this.setState({
     recipeTitle: '',
     servings: '',
+    description: '',
     image: '',
     ingredientsList: [{amount: 0, unit: '', ingredient: ''},],
     instructions: ''
@@ -136,6 +137,11 @@ uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
     alert(`You have submitted: ${this.state.recipeTitle}`)
   }
 
+  // componentDidMount = () => {
+  //   var provider = new firebase.auth.FacebookAuthProvider();
+  //   firebase.auth().signInWithRedirect(provider);
+  // }
+
   render() {
     //Create array of ingredients
     let ingredients = this.state.ingredientsList.map((ingredient, index) => (
@@ -143,29 +149,37 @@ uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
       )
     )
     return (
-      <div>
-        <h2>Add a new recipe</h2>
+      <div className="form-wrapper">
+        <h2 className="form-heading">Add a new recipe</h2>
         <form id="addRecipeForm" onSubmit={this.handleSubmit}>
-
-          <label htmlFor="recipeTitle">Title</label>
-          <input id="recipeTitle" type="text" value={this.state.recipeTitle} onChange={(e) => this.handleInput(e)} />
-
-          <label htmlFor="servings">Servings</label>
-          <input id="servings" type="number" value={this.state.servings} onChange={(e) => this.handleInput(e)} />
-
-          <label htmlFor="servings">Image</label>
-          <input id="image" type="file" ref={this.imageInput} onChange={(e) => this.handleInput(e)} />
-
-          <h3>Ingredients:</h3>
-          <button type="button" onClick={this.handleAddIngredientFields}>Add ingredient</button>
-          <ul>{ingredients}</ul>
-
-          <h3>Instructions:</h3>
-          <label htmlFor="instructions">Instructions</label>
-          <textarea id="instructions" value={this.state.instructions} onChange={(e) => this.handleInput(e)} placeholder="Write instructions on how to prepare the meal here"/>
-
-          <button type="submit" form="addRecipeForm">Save recipe</button>
-
+          <div class="form-recipe-info">
+            <label htmlFor="recipeTitle">Title:</label>
+            <input id="recipeTitle" type="text" required value={this.state.recipeTitle} onChange={(e) => this.handleInput(e)} />
+          </div>
+          <div class="form-recipe-info">
+            <label htmlFor="servings">Servings:</label>
+            <input id="servings" type="number" value={this.state.servings} onChange={(e) => this.handleInput(e)} />
+          </div>
+          <div class="form-recipe-info">
+            <label htmlFor="description">Description:</label>
+            <textarea id="description" rows="4" value={this.state.description} onChange={(e) => this.handleInput(e)} placeholder="Write a short description of this recipe"/>
+          </div>
+          <div class="form-recipe-info">
+            <label htmlFor="servings">Image:</label>
+            <input id="image" type="file" ref={this.imageInput} onChange={(e) => this.handleInput(e)} />
+          </div>
+          <div className="form-ingredients-wrapper">
+            <h3>Ingredients</h3>
+            <button type="button" onClick={this.handleAddIngredientFields}>Add ingredient</button>
+            <ul className="form-ingredients-list">{ingredients}</ul>
+          </div>
+          <div className="form-recipe-instructions">
+            <h3 id="instructions-heading">Instructions</h3>
+            <textarea id="instructions" aria-labelledby="instructions-heading" rows="14" required value={this.state.instructions} onChange={(e) => this.handleInput(e)} placeholder="Write instructions on how to prepare the meal here"/>
+          </div>
+          <div className="submit-wrapper">
+             <button type="submit" form="addRecipeForm">Save recipe</button>
+          </div>
         </form>
       </div>
     );
