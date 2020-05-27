@@ -2,13 +2,14 @@ import React from 'react';
 import firebase from '../firebase.js';
 import * as firebaseui from 'firebaseui'
 import '../css/form.css';
+import SignIn from './signin';
 import Ingredient from './formingredient';
 
 class Form extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      signedInUser: '',
+      user: '',
       recipeTitle: '',
       servings: '',
       image: '',
@@ -31,12 +32,14 @@ class Form extends React.Component {
     }
   }
 
+//ADDS FIELDS WHEN USER CLICKS 'ADD INGREDIENT' BUTTON
   handleAddIngredientFields = () => {
     this.setState({
       ingredientsList: [...this.state.ingredientsList, {amount: 0, unit: '', ingredient: ''}]
     })
   }
 
+//USER INPUT FROM THE INGREDIENT COMPONENT
   handleIngredientInput = (event, index) => {
     if (this.state.ingredientsList.length === 0){
       let list = this.state.ingredientsList.concat({[event.target.name]: event.target.value });
@@ -64,83 +67,100 @@ class Form extends React.Component {
   }
 
   handleSubmit = (event) => {
-    event.preventDefault();
-    const recipesRef = firebase.database().ref('recipes')
+     if (!this.state.user){
+        alert('You need to sign in in order to submit a new recipe')
+     }
+     else {
+     event.preventDefault();
+     //DATABASE REFERENCE
+     const recipesRef = firebase.database().ref('recipes')
+     //OBJECT TO SUBMIT TO DATABASE
+     const recipe = {
+        user: this.state.user,
+        title: this.state.recipeTitle,
+        servings: this.state.servings,
+        image: this.state.image,
+        ingredients: this.state.ingredientsList,
+        instructions: this.state.instructions
+     }
+     //PUSH RECIPE OBJECT TO DATABASE
+     recipesRef.push(recipe)
+     //IF THE RECIPE HAS AN IMAGE, HANDLE THE IMAGE
+     if (document.getElementById('image').files[0]){
+        //STORAGE REFERENCES
+        const storageRef = firebase.storage().ref('images');
+        //GET IMAGE FROM INPUT FIELD.
+        const image = document.getElementById('image').files[0];
+        //UPLOAD IMAGE TO STORAGE
+        var uploadTask = storageRef.child(image.name).put(image)
 
-    const recipe = {
-    title: this.state.recipeTitle,
-    servings: this.state.servings,
-    image: this.state.image,
-    ingredients: this.state.ingredientsList,
-    instructions: this.state.instructions
-  }
+        // Listen for state changes, errors, and completion of the upload.
+        uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
+        function(snapshot) {
+          // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+          var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log('Upload is ' + progress + '% done');
+          switch (snapshot.state) {
+            case firebase.storage.TaskState.PAUSED: // or 'paused'
+              console.log('Upload is paused');
+              break;
+            case firebase.storage.TaskState.RUNNING: // or 'running'
+              console.log('Upload is running');
+              break;
+          }
+        }, function(error) {
+        // A full list of error codes is available at
+        // https://firebase.google.com/docs/storage/web/handle-errors
+        switch (error.code) {
+          case 'storage/unauthorized':
+          console.log(`User doesn't have permission to access the object`)
+            break;
 
-  recipesRef.push(recipe)
+       case 'storage/canceled':
+         console.log('User canceled the upload')
+         break;
+          case 'storage/unknown':
+            console.log('Unknown error occurred, inspect error.serverResponse')
+            break;
+            default:
+            console.log('Something went wrong')
+        }
+      }, function() {
+        // Upload completed successfully, now we can get the download URL
+        uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+          console.log('File available at', downloadURL);
+        });
+      });
+   }
 
-  //IMAGE
-  const storageRef = firebase.storage().ref('images');
-  const image = document.getElementById('image').files[0];
-  console.log(image)
-  var uploadTask = storageRef.child(image.name).put(image)
-
-  // Listen for state changes, errors, and completion of the upload.
-uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
-  function(snapshot) {
-    // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-    var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-    console.log('Upload is ' + progress + '% done');
-    switch (snapshot.state) {
-      case firebase.storage.TaskState.PAUSED: // or 'paused'
-        console.log('Upload is paused');
-        break;
-      case firebase.storage.TaskState.RUNNING: // or 'running'
-        console.log('Upload is running');
-        break;
-    }
-  }, function(error) {
-
-  // A full list of error codes is available at
-  // https://firebase.google.com/docs/storage/web/handle-errors
-  switch (error.code) {
-    case 'storage/unauthorized':
-    console.log(`User doesn't have permission to access the object`)
-      break;
-
-    case 'storage/canceled':
-      console.log('User canceled the upload')
-      break;
-
-    case 'storage/unknown':
-      console.log('Unknown error occurred, inspect error.serverResponse')
-      break;
-      default:
-      console.log('Somte other error')
-
-  }
-}, function() {
-  // Upload completed successfully, now we can get the download URL
-  uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
-    console.log('File available at', downloadURL);
-  });
-});
-
-  //CLEAR STATE
+  //CLEAR LOCAL STATE
   this.setState({
-    recipeTitle: '',
-    servings: '',
-    description: '',
-    image: '',
-    ingredientsList: [{amount: 0, unit: '', ingredient: ''},],
-    instructions: ''
+     user: '',
+     recipeTitle: '',
+     servings: '',
+     description: '',
+     image: '',
+     ingredientsList: [{amount: 0, unit: '', ingredient: ''},],
+     instructions: ''
   })
     console.log('DATA SAVED');
     alert(`You have submitted: ${this.state.recipeTitle}`)
+    firebase.auth().signOut()
+  }
+}
+
+  componentDidMount = () => {
+     //IF USER IS SIGNED IN, SAVE EMAIL IN STATE
+      firebase.auth().onAuthStateChanged(user => {
+      this.setState({ user: user.email});
+      });
   }
 
-  // componentDidMount = () => {
-  //   var provider = new firebase.auth.FacebookAuthProvider();
-  //   firebase.auth().signInWithRedirect(provider);
-  // }
+  handleSignIn = () => {
+     //SIGN IN WITH GOOGLE
+     var provider = new firebase.auth.GoogleAuthProvider();
+     firebase.auth().signInWithRedirect(provider);
+ }
 
   render() {
     //Create array of ingredients
@@ -150,23 +170,24 @@ uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
     )
     return (
       <div className="form-wrapper">
-        <h2 className="form-heading">Add a new recipe</h2>
-        <form id="addRecipeForm" onSubmit={this.handleSubmit}>
-          <div class="form-recipe-info">
-            <label htmlFor="recipeTitle">Title:</label>
-            <input id="recipeTitle" type="text" required value={this.state.recipeTitle} onChange={(e) => this.handleInput(e)} />
+         <SignIn user={this.state.user} handleSignIn={this.handleSignIn} />
+         <h2 className="form-heading">Add a new recipe</h2>
+         <form id="addRecipeForm" onSubmit={this.handleSubmit}>
+            <div className="form-recipe-info">
+               <label htmlFor="recipeTitle">Title:</label>
+               <input id="recipeTitle" type="text" required value={this.state.recipeTitle} onChange={(e) => this.handleInput(e)} />
+           </div>
+           <div className="form-recipe-info">
+             <label htmlFor="servings">Servings:</label>
+             <input id="servings" type="number" value={this.state.servings} onChange={(e) => this.handleInput(e)} />
           </div>
-          <div class="form-recipe-info">
-            <label htmlFor="servings">Servings:</label>
-            <input id="servings" type="number" value={this.state.servings} onChange={(e) => this.handleInput(e)} />
+          <div className="form-recipe-info">
+             <label htmlFor="description">Description:</label>
+             <textarea id="description" rows="4" value={this.state.description} onChange={(e) => this.handleInput(e)} placeholder="Write a short description of this recipe"/>
           </div>
-          <div class="form-recipe-info">
-            <label htmlFor="description">Description:</label>
-            <textarea id="description" rows="4" value={this.state.description} onChange={(e) => this.handleInput(e)} placeholder="Write a short description of this recipe"/>
-          </div>
-          <div class="form-recipe-info">
-            <label htmlFor="servings">Image:</label>
-            <input id="image" type="file" ref={this.imageInput} onChange={(e) => this.handleInput(e)} />
+          <div className="form-recipe-info">
+             <label htmlFor="servings">Image:</label>
+             <input id="image" type="file" ref={this.imageInput} onChange={(e) => this.handleInput(e)} />
           </div>
           <div className="form-ingredients-wrapper">
             <h3>Ingredients</h3>
