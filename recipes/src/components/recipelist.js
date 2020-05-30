@@ -21,6 +21,8 @@ class RecipeList extends React.Component {
           id: recipe,
           recipeTitle: recipes[recipe].title,
           servings: recipes[recipe].servings,
+          description: recipes[recipe].description,
+          image: recipes[recipe].image,
           ingredientsList: recipes[recipe].ingredients,
           instructions: recipes[recipe].instructions
         });
@@ -32,7 +34,7 @@ class RecipeList extends React.Component {
   }
   render(){
     return (
-      <section className="recipe-list-container">
+      <section>
         <ul className="recipe-list">
         {this.state.recipes.map((recipe) => {
           return (
@@ -41,7 +43,12 @@ class RecipeList extends React.Component {
                 <header>
                   <h2><Link className="recipe-list-link" to={`/recipe/${recipe.recipeTitle}?recipeId=${recipe.id}`} >{recipe.recipeTitle}</Link></h2>
                 </header>
+                { recipe.servings &&
                 <p>Servings: {recipe.servings}</p>
+                }
+                { recipe.description &&
+                <p>{recipe.description}</p>
+                }
               </article>
             </li>
           )

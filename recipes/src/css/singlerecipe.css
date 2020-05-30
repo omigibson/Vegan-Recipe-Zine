@@ -1,0 +1,23 @@
+.single-recipe {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   background-color: white;
+   padding: .5rem 2.5rem;
+   border-radius: 1.25rem;
+}
+
+.single-recipe-header {
+   text-align: center;
+}
+
+.single-recipe-image {
+   width: 100%;
+   border-radius: .25rem;
+}
+
+@media screen and (min-width: 992px) {
+   .single-recipe {
+      padding: .5rem 4.5rem;
+   }
+}

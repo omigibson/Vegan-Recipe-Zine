@@ -13,6 +13,10 @@ body {
   font-size: 14px;
 }
 
+main {
+   padding: 1rem;
+}
+
 h1, h2, h3, h4 {
   font-family: 'Abril Fatface', cursive;
 }
@@ -48,6 +52,9 @@ ul {
   body {
     font-size: 16px;
   }
+  main {
+     padding: 2rem;
+ }
   h1 {
     font-size: 3.75rem; /* 60px */
   }

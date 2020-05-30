@@ -15,11 +15,13 @@ function App (props) {
     <React.StrictMode>
       <Router>
         <Header />
-        <Switch>
-          <Route path="/recipe/:id" component={Recipe} ></Route>
-          <Route path="/add-recipe" component={Form}></Route>
-          <Route exact path="/" component={RecipeList} ></Route>
-        </Switch>
+        <main>
+           <Switch>
+             <Route path="/recipe/:id" component={Recipe} ></Route>
+             <Route path="/add-recipe" component={Form}></Route>
+             <Route exact path="/" component={RecipeList} ></Route>
+           </Switch>
+        </main>
       </Router>
     </React.StrictMode>
   )

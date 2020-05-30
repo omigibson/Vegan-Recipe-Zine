@@ -12,12 +12,28 @@ class Form extends React.Component {
       user: '',
       recipeTitle: '',
       servings: '',
+      description: '',
       image: '',
       ingredientsList: [{amount: 0, unit: '', ingredient: ''},],
       instructions: ''
     }
     this.imageInput = React.createRef();
   }
+
+  componentDidMount = () => {
+     // If user is signed in, save email in state
+      firebase.auth().onAuthStateChanged(user => {
+         if (user) {
+            this.setState({ user: user.email});
+         }
+      });
+  }
+
+  handleSignIn = () => {
+     // Sign in with Google
+     var provider = new firebase.auth.GoogleAuthProvider();
+     firebase.auth().signInWithRedirect(provider);
+ }
 
   handleInput = (event) => {
     if (event.id === 'image'){
@@ -32,14 +48,14 @@ class Form extends React.Component {
     }
   }
 
-//ADDS FIELDS WHEN USER CLICKS 'ADD INGREDIENT' BUTTON
+// Adds fields when user clicks 'Add Ingredient' button
   handleAddIngredientFields = () => {
     this.setState({
       ingredientsList: [...this.state.ingredientsList, {amount: 0, unit: '', ingredient: ''}]
     })
   }
 
-//USER INPUT FROM THE INGREDIENT COMPONENT
+// User input from the Ingredient component
   handleIngredientInput = (event, index) => {
     if (this.state.ingredientsList.length === 0){
       let list = this.state.ingredientsList.concat({[event.target.name]: event.target.value });
@@ -72,26 +88,27 @@ class Form extends React.Component {
      }
      else {
      event.preventDefault();
-     //DATABASE REFERENCE
+     // Database reference
      const recipesRef = firebase.database().ref('recipes')
-     //OBJECT TO SUBMIT TO DATABASE
+     // Object to submit to database
      const recipe = {
         user: this.state.user,
         title: this.state.recipeTitle,
         servings: this.state.servings,
+        description: this.state.description,
         image: this.state.image,
         ingredients: this.state.ingredientsList,
         instructions: this.state.instructions
      }
-     //PUSH RECIPE OBJECT TO DATABASE
+     // Push recipe object to database
      recipesRef.push(recipe)
-     //IF THE RECIPE HAS AN IMAGE, HANDLE THE IMAGE
+     //  If the recipe has an image, handle the image
      if (document.getElementById('image').files[0]){
-        //STORAGE REFERENCES
+        // Storage reference
         const storageRef = firebase.storage().ref('images');
-        //GET IMAGE FROM INPUT FIELD.
+        // Get image from input field
         const image = document.getElementById('image').files[0];
-        //UPLOAD IMAGE TO STORAGE
+        // Upload image to storage
         var uploadTask = storageRef.child(image.name).put(image)
 
         // Listen for state changes, errors, and completion of the upload.
@@ -133,7 +150,7 @@ class Form extends React.Component {
       });
    }
 
-  //CLEAR LOCAL STATE
+  // Clear local state after saving recipe
   this.setState({
      user: '',
      recipeTitle: '',
@@ -149,19 +166,6 @@ class Form extends React.Component {
   }
 }
 
-  componentDidMount = () => {
-     //IF USER IS SIGNED IN, SAVE EMAIL IN STATE
-      firebase.auth().onAuthStateChanged(user => {
-      this.setState({ user: user.email});
-      });
-  }
-
-  handleSignIn = () => {
-     //SIGN IN WITH GOOGLE
-     var provider = new firebase.auth.GoogleAuthProvider();
-     firebase.auth().signInWithRedirect(provider);
- }
-
   render() {
     //Create array of ingredients
     let ingredients = this.state.ingredientsList.map((ingredient, index) => (
@@ -169,7 +173,7 @@ class Form extends React.Component {
       )
     )
     return (
-      <div className="form-wrapper">
+      <div>
          <SignIn user={this.state.user} handleSignIn={this.handleSignIn} />
          <h2 className="form-heading">Add a new recipe</h2>
          <form id="addRecipeForm" onSubmit={this.handleSubmit}>
