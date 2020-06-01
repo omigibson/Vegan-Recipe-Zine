@@ -34,7 +34,7 @@ class RecipeList extends React.Component {
   }
   render(){
     return (
-      <section>
+      <div>
         <ul className="recipe-list">
         {this.state.recipes.map((recipe) => {
           return (
@@ -54,7 +54,7 @@ class RecipeList extends React.Component {
           )
         })}
         </ul>
-      </section>
+     </div>
     )
   }
 }

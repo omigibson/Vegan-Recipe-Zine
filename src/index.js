@@ -9,6 +9,7 @@ import Header from './components/header';
 import RecipeList from './components/recipelist';
 import Recipe from './components/singlerecipe';
 import Form from './components/form';
+import Footer from './components/footer'
 
 function App (props) {
   return (
@@ -22,6 +23,7 @@ function App (props) {
              <Route exact path="/" component={RecipeList} ></Route>
            </Switch>
         </main>
+        <Footer />
       </Router>
     </React.StrictMode>
   )
