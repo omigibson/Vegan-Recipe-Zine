@@ -1,6 +1,6 @@
 .form-heading {
   text-align: center;
-  margin: 1rem 0 2.5rem;
+  margin: 1.5rem 0 1rem;
 }
 
 #addRecipeForm {
@@ -11,28 +11,34 @@
 
 .form-recipe-info {
    display: flex;
-   width: calc(50% - 4rem);
-   padding: 1rem 1.5rem;
-   /* margin-bottom: 1rem; */
+   flex-direction: column;
+   width: calc(50% - 2rem);
+   padding: 1rem;
 }
 
 .form-recipe-info label, .form-ingredients-list label {
-  display: inline-block;
+  display: block;
   font-weight: 500;
-  padding-right: .5rem;
+  padding: .5rem .5rem .5rem 0;
 }
 
 .form-recipe-info input, .form-recipe-info textarea, .form-ingredients-list input, .form-ingredients-list select {
-  flex-grow: 1;
+  width: 100%;
+  box-sizing: border-box;
+  padding: .5rem;
+  border: 1px solid black;
+  border-radius: .25rem;
+}
+
+.form-recipe-info input[type=file] {
+   border: none;
 }
 
 .form-ingredients-wrapper {
-   margin: 1rem 0;
-}
-
-.form-ingredients-wrapper, .form-recipe-instructions {
-   width: 100%;
-   text-align: center;
+   width: calc(100% + 2rem);
+   background-color: #d2e7d2;
+   padding: 1.5rem 1.2rem;
+   margin: 1.5rem -1rem;
 }
 
 .form-ingredients-wrapper h3, .form-recipe-instructions h3 {
@@ -45,21 +51,26 @@
 }
 
 .form-ingredients-wrapper fieldset {
-   display: flex;
-   justify-content: center;
+   /* display: flex;
+   flex-direction: column;
+   align-items: start; */
 }
 
 .form-ingredients-list li {
    margin-bottom: 1rem;
 }
 
-.form-ingredients-list label:not(:first-of-type) {
-   padding-left: 2.5rem;
+.form-recipe-instructions {
+   width: 100%;
+   text-align: center;
 }
 
 .form-recipe-instructions textarea {
    width: 100%;
    box-sizing: border-box;
+   padding: .5rem;
+   border: 1px solid black;
+   border-radius: .25rem;
 }
 
 .submit-wrapper {
@@ -67,8 +78,50 @@
    text-align: center;
    margin: 3rem 0 1rem;
 }
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 576px) {
+   .form-recipe-info {
+      width: calc(50% - 4rem);
+      padding: 1rem 1.5rem;
+   }
+   .form-ingredients-wrapper {
+      width: calc(100% + 4rem);
+      text-align: center;
+      padding: 2.5rem 3rem;
+      margin: 1.5rem -2rem;
+   }
+   .form-recipe-info label, .form-ingredients-list label {
+     display: inline-block;
+     padding: .5rem .5rem 0 0;
+   }
+   .form-recipe-info input, .form-recipe-info textarea, .form-ingredients-list input, .form-ingredients-list select {
+     flex-grow: 1;
+     width: auto;
+   }
+   .form-ingredients-wrapper fieldset {
+      display: flex;
+      justify-content: center;
+      border: none;
+   }
+   .form-ingredients-list label:not(:first-of-type) {
+      padding-left: 2.5rem;
+   }
   .form-recipe-instructions {
-     width: 75%;
+     width: 90%;
  }
+}
+@media screen and (min-width: 768px) {
+   .form-heading {
+     margin-bottom: 1rem 0 2.5rem;
+   }
+   .form-recipe-info {
+      flex-direction: row;
+   }
+  .form-recipe-instructions {
+     width: 82%;
+ }
+}
+@media screen and (min-width: 992px) {
+   .form-recipe-instructions {
+      width: 75%;
+  }
 }

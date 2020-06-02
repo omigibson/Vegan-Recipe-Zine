@@ -27,6 +27,9 @@ h1 {
 h2 {
   font-size: 1.35rem;
 }
+h3 {
+  font-size: 1.1rem
+}
 
 a {
   text-decoration: none;
@@ -47,6 +50,9 @@ ul {
   h2 {
     font-size: 1.56rem
   }
+  h3 {
+    font-size: 1.2rem
+  }
 }
 @media screen and (min-width: 768px) {
   body {
@@ -60,5 +66,8 @@ ul {
   }
   h2 {
     font-size: 1.75rem;
+  }
+  h3 {
+    font-size: 1.4rem
   }
 }
