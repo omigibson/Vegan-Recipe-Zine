@@ -40,6 +40,18 @@ ul {
   padding: 0;
 }
 
+button {
+   background-color: ForestGreen;
+   color: white;
+   padding: .6rem 1.1rem;
+   border: none;
+   border-radius: .25rem;
+}
+
+button:hover, button:focus {
+
+}
+
 @media screen and (min-width: 576px) {
   body {
     font-size: 15px;
@@ -68,6 +80,9 @@ ul {
     font-size: 1.75rem;
   }
   h3 {
-    font-size: 1.4rem
+    font-size: 1.4rem;
+  }
+  button {
+     font-size: 1rem;
   }
 }

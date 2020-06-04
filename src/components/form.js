@@ -190,12 +190,12 @@ class Form extends React.Component {
              <textarea id="description" rows="4" value={this.state.description} onChange={(e) => this.handleInput(e)} placeholder="Write a short description of this recipe"/>
           </div>
           <div className="form-recipe-info">
-             <label htmlFor="servings">Image:</label>
+             <label htmlFor="image">Image:</label>
              <input id="image" type="file" ref={this.imageInput} onChange={(e) => this.handleInput(e)} />
           </div>
           <div className="form-ingredients-wrapper">
             <h3>Ingredients</h3>
-            <button type="button" onClick={this.handleAddIngredientFields}>Add ingredient</button>
+            <button type="button" class="add-ingredient-button" onClick={this.handleAddIngredientFields}>Add ingredient</button>
             <ul className="form-ingredients-list">{ingredients}</ul>
           </div>
           <div className="form-recipe-instructions">

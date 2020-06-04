@@ -16,13 +16,13 @@
    padding: 1rem;
 }
 
-.form-recipe-info label, .form-ingredients-list label {
+.form-recipe-info label, .form-ingredient-info label {
   display: block;
   font-weight: 500;
   padding: .5rem .5rem .5rem 0;
 }
 
-.form-recipe-info input, .form-recipe-info textarea, .form-ingredients-list input, .form-ingredients-list select {
+.form-recipe-info input, .form-recipe-info textarea, .form-ingredient-info input, .form-ingredient-info select {
   width: 100%;
   box-sizing: border-box;
   padding: .5rem;
@@ -31,7 +31,9 @@
 }
 
 .form-recipe-info input[type=file] {
-   border: none;
+   background-color: white;
+   height: 33px;
+   border: 1px solid black;
 }
 
 .form-ingredients-wrapper {
@@ -43,21 +45,26 @@
 
 .form-ingredients-wrapper h3, .form-recipe-instructions h3 {
    text-align: center;
+   margin-top: 0;
 }
 
-.form-ingredients-wrapper button {
+.add-ingredient-button {
    display: block;
-   margin: 0 auto;
-}
-
-.form-ingredients-wrapper fieldset {
-   /* display: flex;
-   flex-direction: column;
-   align-items: start; */
+   margin: 0 auto 2rem;
 }
 
 .form-ingredients-list li {
    margin-bottom: 1rem;
+}
+
+.form-ingredient-info {
+   display: flex;
+   flex-direction: column;
+}
+
+.form-ingredient-index {
+   font-family: 'Abril Fatface';
+   padding: .5rem 1.5rem 0 0;
 }
 
 .form-recipe-instructions {
@@ -85,15 +92,10 @@
    }
    .form-ingredients-wrapper {
       width: calc(100% + 4rem);
-      text-align: center;
       padding: 2.5rem 3rem;
-      margin: 1.5rem -2rem;
+      margin: 2.5rem -2rem;
    }
-   .form-recipe-info label, .form-ingredients-list label {
-     display: inline-block;
-     padding: .5rem .5rem 0 0;
-   }
-   .form-recipe-info input, .form-recipe-info textarea, .form-ingredients-list input, .form-ingredients-list select {
+   .form-recipe-info input, .form-recipe-info textarea, .form-ingredient-info input, .form-ingredient-info select {
      flex-grow: 1;
      width: auto;
    }
@@ -102,7 +104,11 @@
       justify-content: center;
       border: none;
    }
-   .form-ingredients-list label:not(:first-of-type) {
+
+   .form-ingredient-info {
+      width: calc(100% / 3);
+   }
+   .form-ingredient-info:not(:first-of-type) {
       padding-left: 2.5rem;
    }
   .form-recipe-instructions {
@@ -114,6 +120,19 @@
      margin-bottom: 1rem 0 2.5rem;
    }
    .form-recipe-info {
+      flex-direction: row;
+   }
+   .form-recipe-info label, .form-ingredient-info label {
+     display: inline-block;
+     padding: .5rem .5rem 0 0;
+   }
+   .form-ingredients-wrapper {
+      text-align: center;
+   }
+   .add-ingredient-button {
+      margin: 0 auto 3rem;
+   }
+   .form-ingredient-info {
       flex-direction: row;
    }
   .form-recipe-instructions {

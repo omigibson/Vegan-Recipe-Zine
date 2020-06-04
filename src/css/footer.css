@@ -4,8 +4,8 @@ footer {
    flex-direction: column;
    align-items: center;
    font-weight: 500;
-   padding: 3rem;
-   margin-top: 1.5rem
+   padding: 3rem 3rem 1.5rem;
+   /* margin-top: 1.5rem */
 }
 
 footer p {
@@ -19,4 +19,9 @@ footer a {
 
 footer a:focus, footer a:hover {
    color: ForestGreen;
+}
+
+.footer-link {
+   width: 32px;
+   margin: 1.5rem .5rem 0;
 }
