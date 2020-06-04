@@ -63,7 +63,7 @@ componentDidMount(){
           }
           <section>
              <h3 className="single-recipe-header">Instructions</h3>
-             <p>{this.state.instructions}</p>
+             <p className="single-recipe-instructions">{this.state.instructions}</p>
           </section>
         </article>
     )

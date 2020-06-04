@@ -162,7 +162,7 @@ class Form extends React.Component {
   })
     console.log('DATA SAVED');
     alert(`You have submitted: ${this.state.recipeTitle}`)
-    firebase.auth().signOut()
+    // firebase.auth().signOut()
   }
 }
 
@@ -176,7 +176,7 @@ class Form extends React.Component {
       <div>
          <SignIn user={this.state.user} handleSignIn={this.handleSignIn} />
          <h2 className="form-heading">Add a new recipe</h2>
-         <form id="addRecipeForm" onSubmit={this.handleSubmit}>
+         <form id="addRecipeForm">
             <div className="form-recipe-info">
                <label htmlFor="recipeTitle">Title:</label>
                <input id="recipeTitle" type="text" required value={this.state.recipeTitle} onChange={(e) => this.handleInput(e)} />
@@ -195,7 +195,7 @@ class Form extends React.Component {
           </div>
           <div className="form-ingredients-wrapper">
             <h3>Ingredients</h3>
-            <button type="button" class="add-ingredient-button" onClick={this.handleAddIngredientFields}>Add ingredient</button>
+            <button type="button" className="add-ingredient-button" onClick={this.handleAddIngredientFields}>Add ingredient</button>
             <ul className="form-ingredients-list">{ingredients}</ul>
           </div>
           <div className="form-recipe-instructions">
@@ -203,7 +203,7 @@ class Form extends React.Component {
             <textarea id="instructions" aria-labelledby="instructions-heading" rows="14" required value={this.state.instructions} onChange={(e) => this.handleInput(e)} placeholder="Write instructions on how to prepare the meal here"/>
           </div>
           <div className="submit-wrapper">
-             <button type="submit" form="addRecipeForm">Save recipe</button>
+             <button type="button" onClick={this.handleSubmit}>Save recipe</button>
           </div>
         </form>
       </div>

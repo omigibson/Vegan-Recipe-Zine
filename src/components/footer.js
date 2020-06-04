@@ -9,10 +9,10 @@ function Footer(props) {
          <p>Site made by Omi Gibba in spring 2020</p>
          <div>
             <a href="https://www.linkedin.com/in/omi-gibba">
-               <img src={LinkedInLogo} alt="LinkedIn" class="footer-link" />
+               <img src={LinkedInLogo} alt="LinkedIn" className="footer-link" />
             </a>
             <a href="https://github.com/omigibson/Vegan-Recipe-Zine">
-               <img src={GitHubLogo} alt="GitHub" class="footer-link" />
+               <img src={GitHubLogo} alt="GitHub" className="footer-link" />
             </a>
          </div>
       </footer>

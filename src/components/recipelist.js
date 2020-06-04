@@ -13,23 +13,47 @@ class RecipeList extends React.Component {
 
   componentDidMount(){
     const recipesRef = firebase.database().ref('recipes')
+    const imagesRef = firebase.storage().ref('images')
     recipesRef.once('value', (snapshot) => {
       let recipes = snapshot.val()
       let newState = []
       for (let recipe in recipes) {
-        newState.push({
-          id: recipe,
-          recipeTitle: recipes[recipe].title,
-          servings: recipes[recipe].servings,
-          description: recipes[recipe].description,
-          image: recipes[recipe].image,
-          ingredientsList: recipes[recipe].ingredients,
-          instructions: recipes[recipe].instructions
-        });
+         if (recipes[recipe].image){
+            console.log('Recipe has image: ' + recipes[recipe].image)
+            let imageName = recipes[recipe].image.replace('C:\\fakepath\\', '')
+            console.log('image name has been fixed: ' + imageName)
+            imagesRef.child(imageName).getDownloadURL().then( (url) => {
+               console.log('DownloadURL fetched')
+               newState.push({
+                 id: recipe,
+                 recipeTitle: recipes[recipe].title,
+                 servings: recipes[recipe].servings,
+                 description: recipes[recipe].description,
+                 image: recipes[recipe].image,
+                 imageUrl: url,
+                 ingredientsList: recipes[recipe].ingredients,
+                 instructions: recipes[recipe].instructions
+               });
+               this.setState({
+                 recipes: newState
+               });
+            })
+         }
+         else {
+            newState.push({
+              id: recipe,
+              recipeTitle: recipes[recipe].title,
+              servings: recipes[recipe].servings,
+              description: recipes[recipe].description,
+              image: recipes[recipe].image,
+              ingredientsList: recipes[recipe].ingredients,
+              instructions: recipes[recipe].instructions
+            });
+            this.setState({
+              recipes: newState
+            });
+         }
       }
-      this.setState({
-        recipes: newState
-      });
     })
   }
   render(){
@@ -40,15 +64,20 @@ class RecipeList extends React.Component {
           return (
             <li key={recipe.id} className="recipe-list-item">
               <article>
-                <header>
-                  <h2><Link className="recipe-list-link" to={`/recipe/${recipe.recipeTitle}?recipeId=${recipe.id}`} >{recipe.recipeTitle}</Link></h2>
-                </header>
-                { recipe.servings &&
-                <p>Servings: {recipe.servings}</p>
-                }
-                { recipe.description &&
-                <p>{recipe.description}</p>
-                }
+                 <Link className="recipe-list-link" to={`/recipe/${recipe.recipeTitle}?recipeId=${recipe.id}`} >
+                    { recipe.imageUrl &&
+                       <img alt={recipe.title} src={recipe.imageUrl} className="recipe-list-image"/>
+                    }
+                   <header className="recipe-list-item-text">
+                      <h2>{recipe.recipeTitle}</h2>
+                   </header>
+                   { recipe.servings &&
+                      <p className="recipe-list-item-text">Servings: {recipe.servings}</p>
+                   }
+                   { recipe.description &&
+                      <p className="recipe-list-item-text">{recipe.description}</p>
+                   }
+                </Link>
               </article>
             </li>
           )
