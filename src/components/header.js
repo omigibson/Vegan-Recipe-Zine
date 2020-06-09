@@ -13,7 +13,7 @@ function Header(props) {
         </h1>
         <nav className="nav">
           <ul className="nav-list">
-            <li><NavLink className="nav-link" to="/">Home</NavLink></li>
+            <li><NavLink exact className="nav-link" to="/">Home</NavLink></li>
             <li><NavLink className="nav-link" to="/add-recipe">Add Recipe</NavLink></li>
           </ul>
         </nav>

@@ -18,41 +18,29 @@ class RecipeList extends React.Component {
       let recipes = snapshot.val()
       let newState = []
       for (let recipe in recipes) {
+         let imageName = '';
          if (recipes[recipe].image){
-            console.log('Recipe has image: ' + recipes[recipe].image)
-            let imageName = recipes[recipe].image.replace('C:\\fakepath\\', '')
-            console.log('image name has been fixed: ' + imageName)
-            imagesRef.child(imageName).getDownloadURL().then( (url) => {
-               console.log('DownloadURL fetched')
-               newState.push({
-                 id: recipe,
-                 recipeTitle: recipes[recipe].title,
-                 servings: recipes[recipe].servings,
-                 description: recipes[recipe].description,
-                 image: recipes[recipe].image,
-                 imageUrl: url,
-                 ingredientsList: recipes[recipe].ingredients,
-                 instructions: recipes[recipe].instructions
-               });
-               this.setState({
-                 recipes: newState
-               });
-            })
+            imageName = recipes[recipe].image.replace('C:\\fakepath\\', '')
          }
          else {
+            imageName = 'chang-qing-unsplash.jpg'
+         }
+         imagesRef.child(imageName).getDownloadURL().then( (url) => {
+            console.log('DownloadURL fetched')
             newState.push({
               id: recipe,
               recipeTitle: recipes[recipe].title,
               servings: recipes[recipe].servings,
               description: recipes[recipe].description,
               image: recipes[recipe].image,
+              imageUrl: url,
               ingredientsList: recipes[recipe].ingredients,
               instructions: recipes[recipe].instructions
             });
             this.setState({
               recipes: newState
             });
-         }
+         })
       }
     })
   }
