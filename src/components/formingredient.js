@@ -1,4 +1,5 @@
 import React from 'react';
+import Button from './button';
 
 function Ingredient(props) {
   return (
@@ -21,6 +22,7 @@ function Ingredient(props) {
          <label htmlFor={`${props.index}-ingredient`}>Ingredient</label>
          <input id={`${props.index}-ingredient`} name="ingredient" type="text" value={props.input ? props.input.ingredient : ''} onChange={(e) => props.onInput(e,props.index)} />
       </div>
+      <Button cls="remove-ingredient" ariaLabel="Remove" buttonText="X" onClick={ () => props.onRemoveClick(props.index) } />
     </fieldset>
   );
 }

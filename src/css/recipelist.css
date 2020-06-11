@@ -1,6 +1,7 @@
 .recipe-list {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
 }
 .recipe-list-item {
   width: 100%;

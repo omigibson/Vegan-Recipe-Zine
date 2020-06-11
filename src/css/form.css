@@ -36,6 +36,10 @@
    border: 1px solid black;
 }
 
+fieldset {
+   position: relative;
+}
+
 .form-ingredients-wrapper {
    width: calc(100% + 2rem);
    background-color: #d2e7d2;
@@ -80,6 +84,18 @@
    border-radius: .25rem;
 }
 
+.remove-ingredient {
+   position: absolute;
+   top: .25rem;
+   right: .68rem;
+   background-color: #ff310c;
+   transition: all .2s;
+}
+
+.remove-ingredient:hover, .remove-ingredient:focus {
+   background-color: #bd1d00;
+}
+
 .submit-wrapper {
    width: 100%;
    text-align: center;
@@ -95,7 +111,7 @@
       padding: 2.5rem 3rem;
       margin: 2.5rem -2rem;
    }
-   .form-recipe-info input, .form-recipe-info textarea, .form-ingredient-info input, .form-ingredient-info select {
+   .form-recipe-info input, .form-recipe-info textarea {
      flex-grow: 1;
      width: auto;
    }
@@ -104,12 +120,18 @@
       justify-content: center;
       border: none;
    }
-
    .form-ingredient-info {
       width: calc(100% / 3);
    }
-   .form-ingredient-info:not(:first-of-type) {
-      padding-left: 2.5rem;
+   .form-ingredient-info {
+      padding-right: 1.5rem;
+   }
+   .form-ingredient-info:last-of-type {
+      padding-right: 4rem;
+   }
+   .remove-ingredient {
+      top: auto;
+      bottom: .7rem;
    }
   .form-recipe-instructions {
      width: 90%;
@@ -122,24 +144,38 @@
    .form-recipe-info {
       flex-direction: row;
    }
-   .form-recipe-info label, .form-ingredient-info label {
+   .form-recipe-info label {
      display: inline-block;
      padding: .5rem .5rem 0 0;
-   }
-   .form-ingredients-wrapper {
-      text-align: center;
    }
    .add-ingredient-button {
       margin: 0 auto 3rem;
    }
    .form-ingredient-info {
-      flex-direction: row;
+      padding-right: 2.5rem;
+   }
+   .form-ingredient-info:last-of-type {
+      padding-right: 5rem;
+   }
+   .form-ingredient-info input, .form-ingredient-info select {
+     flex-grow: 1;
+     width: auto;
    }
   .form-recipe-instructions {
      width: 82%;
  }
 }
 @media screen and (min-width: 992px) {
+   .form-ingredients-wrapper {
+      text-align: center;
+   }
+   .form-ingredient-info {
+      flex-direction: row;
+   }
+   .form-ingredient-info label {
+     display: inline-block;
+     padding: .5rem .5rem 0 0;
+   }
    .form-recipe-instructions {
       width: 75%;
   }

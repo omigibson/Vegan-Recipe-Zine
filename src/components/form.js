@@ -2,8 +2,11 @@ import React from 'react';
 import firebase from '../firebase.js';
 import * as firebaseui from 'firebaseui'
 import '../css/form.css';
+
+//COMPONENTS
 import SignIn from './signin';
 import Ingredient from './formingredient';
+import Button from './button';
 
 class Form extends React.Component {
   constructor(props) {
@@ -35,6 +38,8 @@ class Form extends React.Component {
      firebase.auth().signInWithRedirect(provider);
  }
 
+
+// All user input, except from the Ingredient component
   handleInput = (event) => {
     if (event.id === 'image'){
       this.setState({
@@ -81,6 +86,13 @@ class Form extends React.Component {
       })
     }
   }
+
+  handleRemoveIngredient = (removeIndex) => {
+     let ingredientToRemove = this.state.ingredientsList[removeIndex]
+     this.setState(prevState => ({
+        ingredientsList: prevState.ingredientsList.filter(ingredient => ingredient !== ingredientToRemove )
+     }));
+ }
 
   handleSubmit = (event) => {
      if (!this.state.user){
@@ -167,11 +179,7 @@ class Form extends React.Component {
 }
 
   render() {
-    //Create array of ingredients
-    let ingredients = this.state.ingredientsList.map((ingredient, index) => (
-      <li key={index}><Ingredient index={index} onInput={this.handleIngredientInput} input={this.state.ingredientsList[index]} /></li>
-      )
-    )
+
     return (
       <div>
          <SignIn user={this.state.user} handleSignIn={this.handleSignIn} />
@@ -195,15 +203,21 @@ class Form extends React.Component {
           </div>
           <div className="form-ingredients-wrapper">
             <h3>Ingredients</h3>
-            <button type="button" className="add-ingredient-button" onClick={this.handleAddIngredientFields}>Add ingredient</button>
-            <ul className="form-ingredients-list">{ingredients}</ul>
+            <Button cls="add-ingredient-button" onClick={this.handleAddIngredientFields} buttonText="Add Ingredient" />
+            <ul className="form-ingredients-list">
+               { this.state.ingredientsList.map((ingredient, index) => (
+                     <li key={index}>
+                        <Ingredient index={index} onInput={this.handleIngredientInput} input={this.state.ingredientsList[index]} onRemoveClick={this.handleRemoveIngredient} />
+                     </li>
+                  )) }
+            </ul>
           </div>
           <div className="form-recipe-instructions">
             <h3 id="instructions-heading">Instructions</h3>
             <textarea id="instructions" aria-labelledby="instructions-heading" rows="14" required value={this.state.instructions} onChange={(e) => this.handleInput(e)} placeholder="Write instructions on how to prepare the meal here"/>
           </div>
           <div className="submit-wrapper">
-             <button type="button" onClick={this.handleSubmit}>Save recipe</button>
+             <Button onClick={this.handleSubmit} buttonText="Save Recipe" />
           </div>
         </form>
       </div>
