@@ -18,7 +18,8 @@ class Form extends React.Component {
       description: '',
       image: '',
       ingredientsList: [{amount: 0, unit: '', ingredient: ''},],
-      instructions: ''
+      instructions: '',
+      formErrors: [],
     }
     this.imageInput = React.createRef();
   }
@@ -45,7 +46,13 @@ class Form extends React.Component {
       this.setState({
         [event.target.id]: this.imageInput.current.files[0].name
       })
-    }
+   }
+   else if (this.state.formErrors.length > 0) {
+      this.setState({
+         [event.target.id]: event.target.value,
+         formErrors: this.state.formErrors.filter(error => error !== event.target.id )
+     })
+   }
     else {
       this.setState({
         [event.target.id]: event.target.value
@@ -95,8 +102,23 @@ class Form extends React.Component {
  }
 
   handleSubmit = (event) => {
+     //First, check if user is signed in
      if (!this.state.user){
         alert('You need to sign in in order to submit a new recipe')
+     }
+     //Next, check if all mandatory fields are filled in
+     else if(this.state.recipeTitle.length === 0 || this.state.instructions.length === 0){
+        let fields = []
+        if (this.state.recipeTitle.length === 0){
+           fields.push('recipeTitle')
+        }
+        if (this.state.instructions.length === 0){
+           fields.push('instructions')
+        }
+        this.setState({
+           formErrors: fields
+        })
+        alert('You need to fill in all mandatory fields in order to submit a new recipe')
      }
      else {
      event.preventDefault();
@@ -113,7 +135,21 @@ class Form extends React.Component {
         instructions: this.state.instructions
      }
      // Push recipe object to database
-     recipesRef.push(recipe)
+     recipesRef.push(recipe, () => {
+        alert(`You have submitted: ${this.state.recipeTitle}`)
+        // Clear local state after saving recipe
+        this.setState({
+           user: '',
+           recipeTitle: '',
+           servings: '',
+           description: '',
+           image: '',
+           ingredientsList: [{amount: 0, unit: '', ingredient: ''},],
+           instructions: '',
+           formErrors: []
+        })
+        // firebase.auth().signOut()
+     })
      //  If the recipe has an image, handle the image
      if (document.getElementById('image').files[0]){
         // Storage reference
@@ -161,25 +197,10 @@ class Form extends React.Component {
         });
       });
    }
-
-  // Clear local state after saving recipe
-  this.setState({
-     user: '',
-     recipeTitle: '',
-     servings: '',
-     description: '',
-     image: '',
-     ingredientsList: [{amount: 0, unit: '', ingredient: ''},],
-     instructions: ''
-  })
-    console.log('DATA SAVED');
-    alert(`You have submitted: ${this.state.recipeTitle}`)
-    // firebase.auth().signOut()
   }
 }
 
   render() {
-
     return (
       <div>
          <SignIn user={this.state.user} handleSignIn={this.handleSignIn} />
@@ -187,7 +208,15 @@ class Form extends React.Component {
          <form id="addRecipeForm">
             <div className="form-recipe-info">
                <label htmlFor="recipeTitle">Title:</label>
-               <input id="recipeTitle" type="text" required value={this.state.recipeTitle} onChange={(e) => this.handleInput(e)} />
+               <input
+                  id="recipeTitle"
+                  class={this.state.formErrors.includes('recipeTitle') ? 'invalid' : '' }
+                  type="text"
+                  value={this.state.recipeTitle}
+                  onChange={(e) => this.handleInput(e)}
+                  aria-required="true"
+                  aria-invalid={this.state.formErrors.includes('recipeTitle') ? true : false}
+               />
            </div>
            <div className="form-recipe-info">
              <label htmlFor="servings">Servings:</label>
@@ -214,7 +243,15 @@ class Form extends React.Component {
           </div>
           <div className="form-recipe-instructions">
             <h3 id="instructions-heading">Instructions</h3>
-            <textarea id="instructions" aria-labelledby="instructions-heading" rows="14" required value={this.state.instructions} onChange={(e) => this.handleInput(e)} placeholder="Write instructions on how to prepare the meal here"/>
+            <textarea
+               id="instructions"
+               class={this.state.formErrors.includes('instructions') ? 'invalid' : '' }
+               aria-labelledby="instructions-heading"
+               rows="14"
+               value={this.state.instructions}
+               aria-required="true"
+               aria-invalid={this.state.formErrors.includes('instructions') ? true : false}
+               onChange={(e) => this.handleInput(e)} placeholder="Write instructions on how to prepare the meal here"/>
           </div>
           <div className="submit-wrapper">
              <Button onClick={this.handleSubmit} buttonText="Save Recipe" />

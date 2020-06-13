@@ -3,8 +3,8 @@ import Button from './button';
 
 function Ingredient(props) {
   return (
-    <fieldset>
-      <span className="form-ingredient-index">{props.index + 1}.</span>
+    <fieldset aria-label={`Ingredient ${props.index + 1}`}>
+      <span className="form-ingredient-index" aria-hidden="true">{props.index + 1}.</span>
       <div className="form-ingredient-info">
          <label htmlFor={`${props.index}-amount`}>Amount</label>
          <input id={`${props.index}-amount`} type="number" step=".01" name="amount" value={props.input ? props.input.amount : ''} onChange={(e) => props.onInput(e, props.index)} />

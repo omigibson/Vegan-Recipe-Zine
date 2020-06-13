@@ -9,6 +9,14 @@
   justify-content: center;
 }
 
+input:focus, textarea:focus, select:focus {
+   outline: 3px solid forestgreen;
+}
+
+.invalid {
+   outline: 3px solid #ff310c;
+}
+
 .form-recipe-info {
    display: flex;
    flex-direction: column;
