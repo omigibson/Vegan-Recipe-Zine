@@ -55,7 +55,7 @@ componentDidMount(){
                 <ul>
                    {this.state.ingredientsList.map((ingredient) => {
                     return (
-                      <li>{ingredient.amount} {ingredient.unit} {ingredient.ingredient}</li>
+                      <li class="single-recipe-ingredient">{ingredient.amount} {ingredient.unit} {ingredient.ingredient}</li>
                     )
                   })}
                 </ul>
