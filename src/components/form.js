@@ -1,6 +1,5 @@
 import React from 'react';
 import firebase from '../firebase.js';
-import * as firebaseui from 'firebaseui'
 import '../css/form.css';
 
 //COMPONENTS
@@ -172,6 +171,7 @@ class Form extends React.Component {
             case firebase.storage.TaskState.RUNNING: // or 'running'
               console.log('Upload is running');
               break;
+              default:
           }
         }, function(error) {
         // A full list of error codes is available at
@@ -210,7 +210,7 @@ class Form extends React.Component {
                <label htmlFor="recipeTitle">Title:</label>
                <input
                   id="recipeTitle"
-                  class={this.state.formErrors.includes('recipeTitle') ? 'invalid' : '' }
+                  className={this.state.formErrors.includes('recipeTitle') ? 'invalid' : '' }
                   type="text"
                   value={this.state.recipeTitle}
                   onChange={(e) => this.handleInput(e)}
@@ -245,7 +245,7 @@ class Form extends React.Component {
             <h3 id="instructions-heading">Instructions</h3>
             <textarea
                id="instructions"
-               class={this.state.formErrors.includes('instructions') ? 'invalid' : '' }
+               className={this.state.formErrors.includes('instructions') ? 'invalid' : '' }
                aria-labelledby="instructions-heading"
                rows="14"
                value={this.state.instructions}

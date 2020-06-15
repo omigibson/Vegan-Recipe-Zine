@@ -25,9 +25,7 @@ componentDidMount(){
          instructions: recipe.instructions
       }, () => {
             const imageRef = firebase.storage().ref(`images/${this.state.image}`)
-            console.log(imageRef)
             imageRef.getDownloadURL().then( (url) => {
-               console.log(url)
                this.setState({
                   imageUrl: url
                })
@@ -53,9 +51,9 @@ componentDidMount(){
              <section>
                 <h3 className="single-recipe-header">Ingredients</h3>
                 <ul>
-                   {this.state.ingredientsList.map((ingredient) => {
+                   {this.state.ingredientsList.map((ingredient, index) => {
                     return (
-                      <li class="single-recipe-ingredient">{ingredient.amount} {ingredient.unit} {ingredient.ingredient}</li>
+                      <li key={index} className="single-recipe-ingredient">{ingredient.amount} {ingredient.unit} {ingredient.ingredient}</li>
                     )
                   })}
                 </ul>
