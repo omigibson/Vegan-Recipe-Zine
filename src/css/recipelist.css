@@ -29,6 +29,10 @@
 .recipe-list-link:hover, .recipe-list-link:focus {
   color: ForestGreen;
 }
+.load-more {
+   display: block;
+   margin: 0 auto;
+}
 @media screen and (min-width: 576px) {
   .recipe-list-item {
     width: calc(50% - 3rem);

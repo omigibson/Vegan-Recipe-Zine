@@ -9,7 +9,8 @@ class RecipeList extends React.Component {
     super(props)
     this.state = {
       recipes: [],
-      paginationIndex: ''
+      paginationIndex: '',
+      fetchedAllRecipes: false
     }
   }
 
@@ -23,14 +24,18 @@ class RecipeList extends React.Component {
      recipesRef.orderByKey().startAt(this.state.paginationIndex).limitToFirst(4).on('value', (snapshot) => {
         let recipes = snapshot.val()
         let newState = [...this.state.recipes]
+        // loop through recipes from the database
         for (let recipe in recipes) {
            let imageName = '';
+           // If the recipe has an image, set imageName to that image
            if (recipes[recipe].image){
              imageName = recipes[recipe].image.replace('C:\\fakepath\\', '')
           }
           else {
+             // If the recipe has no image, set imageName to default image
              imageName = 'chang-qing-unsplash.jpg'
           }
+          // Get recipe image or default iamge from Firebase Storage
           imagesRef.child(imageName).getDownloadURL().then( (url) => {
              newState.push({
                id: recipe,
@@ -53,9 +58,17 @@ class RecipeList extends React.Component {
                  return 0;
              })
              let paginationIndex = newState[newState.length - 1].id
+             let filteredRecipes = []
+             if (Object.keys(recipes).length < 4 && recipe === paginationIndex){
+                filteredRecipes = newState
+             }
+             else {
+                filteredRecipes = newState.filter(recipe => recipe.id !== paginationIndex)
+             }
              this.setState({
                paginationIndex: paginationIndex,
-               recipes: newState.filter(recipe => recipe.id !== paginationIndex)
+               recipes: filteredRecipes,
+               fetchedAllRecipes: Object.keys(recipes).length < 4 ? true : false
              });
           })
        }
@@ -89,7 +102,9 @@ class RecipeList extends React.Component {
           )
         })}
         </ul>
-        <button onClick={() => this.getRecipes()}>More Recipes</button>
+        { !this.state.fetchedAllRecipes &&
+           <Button cls="load-more" onClick={this.getRecipes} buttonText="More Recipes" />
+        }
      </div>
     )
   }
