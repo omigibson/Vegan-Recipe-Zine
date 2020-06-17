@@ -64,7 +64,7 @@ class RecipeList extends React.Component {
              let paginationIndex = newState[newState.length - 1].id
              let filteredRecipes = []
              // If all recipes are fetched, set all of them to filteredRecipes
-             if (Object.keys(recipes).length < 9 && recipe === paginationIndex){
+             if (Object.keys(recipes).length < 9){
                 filteredRecipes = newState
              }
              // if there are still more recipes in the database, filter out the paginationIndex recipe
