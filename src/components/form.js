@@ -237,7 +237,6 @@ class Form extends React.Component {
           </div>
           <div className="form-ingredients-wrapper">
             <h3>Ingredients</h3>
-            <Button cls="add-ingredient-button" onClick={this.handleAddIngredientFields} buttonText="Add Ingredient" />
             <ul className="form-ingredients-list">
                { this.state.ingredientsList.map((ingredient, index) => (
                      <li key={index}>
@@ -245,6 +244,7 @@ class Form extends React.Component {
                      </li>
                   )) }
             </ul>
+            <Button cls="add-ingredient-button" onClick={this.handleAddIngredientFields} buttonText="Add Ingredient" />
           </div>
           <div className="form-recipe-instructions">
             <h3 id="instructions-heading">Instructions</h3>
