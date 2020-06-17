@@ -2,7 +2,7 @@ import React from 'react';
 import firebase from '../firebase.js';
 import '../css/form.css';
 
-//COMPONENTS
+// Components
 import SignIn from './signin';
 import Ingredient from './formingredient';
 import Button from './button';
@@ -93,6 +93,7 @@ class Form extends React.Component {
     }
   }
 
+// Remove Ingredient from list
   handleRemoveIngredient = (removeIndex) => {
      let ingredientToRemove = this.state.ingredientsList[removeIndex]
      this.setState(prevState => ({
@@ -100,6 +101,7 @@ class Form extends React.Component {
      }));
  }
 
+// Submit recipe
   handleSubmit = (event) => {
      //First, check if user is signed in
      if (!this.state.user){
@@ -120,10 +122,14 @@ class Form extends React.Component {
         alert('You need to fill in all mandatory fields in order to submit a new recipe')
      }
      else {
+      /* If user is logged signed in and have filled in all mandatory fields,
+      continue submitting the recipe */
+
+      // First, prevent default behaviour of a button in a form. The page should not reload
      event.preventDefault();
-     // Database reference
+     // Create database reference
      const recipesRef = firebase.database().ref('recipes')
-     // Object to submit to database
+     // Create recipe object to submit to database
      const recipe = {
         user: this.state.user,
         title: this.state.recipeTitle,
@@ -147,11 +153,10 @@ class Form extends React.Component {
            instructions: '',
            formErrors: []
         })
-        // firebase.auth().signOut()
      })
      //  If the recipe has an image, handle the image
      if (document.getElementById('image').files[0]){
-        // Storage reference
+        // Create storage reference
         const storageRef = firebase.storage().ref('images');
         // Get image from input field
         const image = document.getElementById('image').files[0];

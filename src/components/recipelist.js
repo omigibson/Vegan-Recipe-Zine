@@ -19,9 +19,12 @@ class RecipeList extends React.Component {
   }
 
   getRecipes = () => {
+     // Create database and storage references
      const recipesRef = firebase.database().ref('recipes')
      const imagesRef = firebase.storage().ref('images')
-     recipesRef.orderByKey().startAt(this.state.paginationIndex).limitToFirst(4).on('value', (snapshot) => {
+
+     // Ger 9 recipes starting at paginationIndex
+     recipesRef.orderByKey().startAt(this.state.paginationIndex).limitToFirst(9).on('value', (snapshot) => {
         let recipes = snapshot.val()
         let newState = [...this.state.recipes]
         // loop through recipes from the database
@@ -35,7 +38,7 @@ class RecipeList extends React.Component {
              // If the recipe has no image, set imageName to default image
              imageName = 'chang-qing-unsplash.jpg'
           }
-          // Get recipe image or default iamge from Firebase Storage
+          // Get recipe image or default iamge from storage
           imagesRef.child(imageName).getDownloadURL().then( (url) => {
              newState.push({
                id: recipe,
@@ -47,7 +50,7 @@ class RecipeList extends React.Component {
                ingredientsList: recipes[recipe].ingredients,
                instructions: recipes[recipe].instructions
              });
-             //Sort recipes in age order
+             // Sort recipes in age order
              newState.sort((a,b) => {
                if ( a.id < b.id ){
                   return -1;
@@ -57,18 +60,21 @@ class RecipeList extends React.Component {
                  }
                  return 0;
              })
+             // Create paginationIndex to reference when getting more recipes from the database
              let paginationIndex = newState[newState.length - 1].id
              let filteredRecipes = []
-             if (Object.keys(recipes).length < 4 && recipe === paginationIndex){
+             // If all recipes are fetched, set all of them to filteredRecipes
+             if (Object.keys(recipes).length < 9 && recipe === paginationIndex){
                 filteredRecipes = newState
              }
+             // if there are still more recipes in the database, filter out the paginationIndex recipe
              else {
                 filteredRecipes = newState.filter(recipe => recipe.id !== paginationIndex)
              }
              this.setState({
                paginationIndex: paginationIndex,
                recipes: filteredRecipes,
-               fetchedAllRecipes: Object.keys(recipes).length < 4 ? true : false
+               fetchedAllRecipes: Object.keys(recipes).length < 9 ? true : false
              });
           })
        }
