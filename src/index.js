@@ -9,7 +9,8 @@ import Header from './components/header';
 import RecipeList from './components/recipelist';
 import Recipe from './components/singlerecipe';
 import Form from './components/form';
-import Footer from './components/footer'
+import Footer from './components/footer';
+import PageNotFound from './components/404'
 
 function App (props) {
   return (
@@ -21,6 +22,7 @@ function App (props) {
              <Route path="/recipe/:id" component={Recipe} ></Route>
              <Route path="/add-recipe" component={Form}></Route>
              <Route exact path="/" component={RecipeList} ></Route>
+             <Route component={PageNotFound} ></Route>
            </Switch>
         </main>
         <Footer />
