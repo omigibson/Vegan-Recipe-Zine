@@ -26,6 +26,7 @@ componentDidMount(){
       }, () => {
             const imageRef = firebase.storage().ref(`images/${this.state.image}`)
             imageRef.getDownloadURL().then( (url) => {
+               url = url.replace('https://firebasestorage.googleapis.com', ' https://ik.imagekit.io/7lgsnfz7v5')
                this.setState({
                   imageUrl: url
                })
