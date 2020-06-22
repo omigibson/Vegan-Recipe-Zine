@@ -3,3 +3,5 @@ This is a simple vegan recipe zine, where me and my friends (or anyone that want
 The project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 Routing is done with [React Router](https://reacttraining.com/react-router/)
+
+Image optimization and resizing is done with [Image Kit](https://imagekit.io/)

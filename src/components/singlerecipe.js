@@ -41,7 +41,14 @@ componentDidMount(){
             <h2 className="single-recipe-header">{this.state.title ? this.state.title : '' }</h2>
           </header>
           { this.state.imageUrl &&
-             <img className="single-recipe-image" src={this.state.imageUrl} alt={this.state.title} />
+             <picture>
+                <source type="image/webp" media="(max-width: 575px)" srcSet={`${this.state.imageUrl}?tr=w-463`} />
+                <source type="image/webp" media="(min-width: 576px)" srcSet={`${this.state.imageUrl}?tr=w-655`} />
+                <source type="image/webp" media="(min-width: 768px)" srcSet={`${this.state.imageUrl}?tr=w-847`} />
+                <source type="image/webp" media="(min-width: 992px)" srcSet={`${this.state.imageUrl}?tr=w-991`} />
+                <source type="image/webp" media="(min-width: 1200px)" srcSet={`${this.state.imageUrl}?tr=w-1158`} />
+                <img className="single-recipe-image" src={this.state.imageUrl} alt={this.state.recipeTitle}/>
+             </picture>
           }
           <p>{this.state.description}</p>
           { this.state.servings &&
