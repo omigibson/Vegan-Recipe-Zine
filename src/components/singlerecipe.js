@@ -48,7 +48,7 @@ componentDidMount(){
                 <source type="image/webp" media="(min-width: 768px)" srcSet={`${this.state.imageUrl}?tr=w-847`} />
                 <source type="image/webp" media="(min-width: 992px)" srcSet={`${this.state.imageUrl}?tr=w-991`} />
                 <source type="image/webp" media="(min-width: 1200px)" srcSet={`${this.state.imageUrl}?tr=w-1158`} />
-                <img className="single-recipe-image" src={this.state.imageUrl} alt={this.state.recipeTitle}/>
+                <img className="single-recipe-image" src={this.state.imageUrl} alt={this.state.title} loading="lazy" />
              </picture>
           }
           <p>{this.state.description}</p>

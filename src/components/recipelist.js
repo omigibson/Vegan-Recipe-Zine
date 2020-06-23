@@ -40,7 +40,7 @@ class RecipeList extends React.Component {
           }
           // Get recipe image or default iamge from storage
           imagesRef.child(imageName).getDownloadURL().then( (url) => {
-             url = url.replace('https://firebasestorage.googleapis.com', ' https://ik.imagekit.io/7lgsnfz7v5')
+             url = url.replace('https://firebasestorage.googleapis.com', 'https://ik.imagekit.io/7lgsnfz7v5')
              newState.push({
                id: recipe,
                recipeTitle: recipes[recipe].title,
@@ -98,7 +98,7 @@ class RecipeList extends React.Component {
                           <source type="image/webp" media="(min-width: 768px)" srcSet={`${recipe.imageUrl}?tr=h-202`} />
                           <source type="image/webp" media="(min-width: 992px)" srcSet={`${recipe.imageUrl}?tr=h-180`} />
                           <source type="image/webp" media="(min-width: 1200px)" srcSet={`${recipe.imageUrl}?tr=h-220`} />
-                          <img className="recipe-list-image" src={recipe.imageUrl} alt={recipe.recipeTitle} />
+                          <img className="recipe-list-image" src={recipe.imageUrl} alt={recipe.recipeTitle} loading="lazy" />
                        </picture>
                     }
                    <header className="recipe-list-item-text">
