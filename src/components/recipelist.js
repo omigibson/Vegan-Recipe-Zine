@@ -8,6 +8,8 @@ class RecipeList extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      recipesRef: '',
+      imagesRef:'',
       recipes: [],
       paginationIndex: '',
       fetchedAllRecipes: false
@@ -15,16 +17,28 @@ class RecipeList extends React.Component {
   }
 
   componentDidMount(){
-    this.getRecipes('')
-  }
-
-  getRecipes = () => {
      // Create database and storage references
      const recipesRef = firebase.database().ref('recipes')
      const imagesRef = firebase.storage().ref('images')
 
-     // Ger 9 recipes starting at paginationIndex
-     recipesRef.orderByKey().startAt(this.state.paginationIndex).limitToFirst(9).on('value', (snapshot) => {
+   // Set starting index and save it in state. Also save refs in state
+      recipesRef.orderByKey().limitToFirst(1).on('value', (snapshot) => {
+        let recipeObject = snapshot.val();
+        let keyArray = Object.keys(recipeObject);
+        this.setState({
+            paginationIndex: keyArray[0],
+            recipesRef: recipesRef,
+            imagesRef: imagesRef
+            }, () => {
+          this.getRecipes()
+         }
+      );
+   });
+  }
+
+  getRecipes = () => {
+     // Get 9 recipes starting at paginationIndex
+     this.state.recipesRef.orderByKey().startAt(this.state.paginationIndex).limitToFirst(10).on('value', (snapshot) => {
         let recipes = snapshot.val()
         let newState = [...this.state.recipes]
         // loop through recipes from the database
@@ -38,8 +52,8 @@ class RecipeList extends React.Component {
              // If the recipe has no image, set imageName to default image
              imageName = 'chang-qing-unsplash.jpg'
           }
-          // Get recipe image or default iamge from storage
-          imagesRef.child(imageName).getDownloadURL().then( (url) => {
+          // Get recipe image or default image from storage
+          this.state.imagesRef.child(imageName).getDownloadURL().then( (url) => {
              url = url.replace('https://firebasestorage.googleapis.com', 'https://ik.imagekit.io/7lgsnfz7v5')
              newState.push({
                id: recipe,
@@ -65,7 +79,7 @@ class RecipeList extends React.Component {
              let paginationIndex = newState[newState.length - 1].id
              let filteredRecipes = []
              // If all recipes are fetched, set all of them to filteredRecipes
-             if (Object.keys(recipes).length < 9){
+             if (Object.keys(recipes).length < 10){
                 filteredRecipes = newState
              }
              // if there are still more recipes in the database, filter out the paginationIndex recipe
@@ -75,7 +89,7 @@ class RecipeList extends React.Component {
              this.setState({
                paginationIndex: paginationIndex,
                recipes: filteredRecipes,
-               fetchedAllRecipes: Object.keys(recipes).length < 9 ? true : false
+               fetchedAllRecipes: Object.keys(recipes).length < 10 ? true : false
              });
           })
        }
